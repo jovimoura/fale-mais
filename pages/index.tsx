@@ -4,6 +4,8 @@ import Input from '../components/Input'
 import Select from '../components/Select'
 import { Plans } from '../types/plans'
 import { Prices } from '../types/prices'
+import { server } from '../utils/config'
+import connect from '../utils/db'
 
 interface IndexProps {
   prices: Array<Prices>
@@ -11,8 +13,6 @@ interface IndexProps {
 }
 
 export async function getServerSideProps() {
-  const dev = process.env.NODE_ENV !== 'production'
-  const server = dev ? 'http://localhost:3000' : 'https://fale-mais-theta.vercel.app'
   const resPrices = await fetch(`${server}/api/prices`)
   const prices = await resPrices.json()
 
@@ -33,7 +33,7 @@ function Home({ prices, plans }: IndexProps) {
 
   const [originState, setOriginState] = useState()
   const [destinyState, setDestinyState] = useState()
-  const [timeState, setTimeState] = useState('0')
+  const [timeState, setTimeState] = useState()
   const [planState, setPlanState] = useState()
 
   const [valueWithPlan, setValueWithPlan] = useState()
@@ -69,7 +69,9 @@ function Home({ prices, plans }: IndexProps) {
     if (parseInt(time) < selectPlan(plan)) {
       return 0
     } else {
-      return ((parseInt(time) - selectPlan(plan)) * parseFloat(perMin)).toFixed(2)
+      return ((parseInt(time) - selectPlan(plan)) * parseFloat(perMin)).toFixed(
+        2
+      )
     }
   }
 
@@ -77,7 +79,7 @@ function Home({ prices, plans }: IndexProps) {
     prices.forEach((price: any) => {
       if (orig === price.origin && dest === price.destiny) {
         setValueWithouPlan(withoutPlan(timeState, price.perMin))
-        setValueWithPlan(withPlan(timeState, price.perMin, planState))  
+        setValueWithPlan(withPlan(timeState, price.perMin, planState))
       }
     })
   }
@@ -96,7 +98,7 @@ function Home({ prices, plans }: IndexProps) {
               Fale<a className="italic text-cyan-400">Mais</a>
             </h1>
           </div>
-          <div className="flex">
+          <div className="flex flex-wrap justify-center">
             <div>
               <Select
                 onChange={(e: any) => setOriginState(e.target.value)}
@@ -113,13 +115,16 @@ function Home({ prices, plans }: IndexProps) {
                 items={secondDDD}
               />
             </div>
-            <Input
-              onChange={(e: any) => setTimeState(e.target.value)}
-              value={timeState}
-              type="number"
-              placeholder="Tempo"
-              icon="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
+            <div>
+              <Input
+                onChange={(e: any) => setTimeState(e.target.value)}
+                value={timeState}
+                type="number"
+                placeholder="Tempo"
+                icon="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </div>
+
             <div>
               <Select
                 label="Plano"
@@ -173,7 +178,9 @@ function Home({ prices, plans }: IndexProps) {
                 </svg>
               </div>
               <div className="text-center">
-                <h2 className='text-4xl font-bold text-green-500'>R$: {valueWithPlan}</h2>
+                <h2 className="text-4xl font-bold text-green-500">
+                  R$: {valueWithPlan}
+                </h2>
               </div>
             </div>
             <div>
@@ -198,7 +205,9 @@ function Home({ prices, plans }: IndexProps) {
                 </svg>
               </div>
               <div className="text-center">
-                <h2 className='text-4xl font-bold text-red-600'>R$: {valueWithouPlan}</h2>
+                <h2 className="text-4xl font-bold text-red-600">
+                  R$: {valueWithouPlan}
+                </h2>
               </div>
             </div>
           </div>

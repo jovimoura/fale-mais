@@ -14,7 +14,7 @@ export default function Input({
   icon
 }: InputProps) {
   return (
-    <div className="flex rounded-3xl border-2 border-solid border-zinc-300 justify-center items-center font-medium bg-transparent">
+    <div className="flex rounded-3xl border-2 border-solid border-zinc-300 justify-center items-center font-medium bg-transparent py-2.5 pl-2 pr-5">
       {icon && (
         <>
           <svg

@@ -4,6 +4,7 @@ import Input from '../components/Input'
 import Select from '../components/Select'
 import { Plans } from '../types/plans'
 import { Prices } from '../types/prices'
+import { server } from '../utils/config'
 
 interface IndexProps {
   prices: Array<Prices>
@@ -97,6 +98,7 @@ function Home({ prices, plans }: IndexProps) {
 
   return (
     <>
+    {console.log('teste', server)}
       <div className="flex min-h-screen flex-col items-center mt-5 py-2">
         <Head>
           <title>FaleMais</title>

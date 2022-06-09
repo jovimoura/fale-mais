@@ -4,8 +4,6 @@ import Input from '../components/Input'
 import Select from '../components/Select'
 import { Plans } from '../types/plans'
 import { Prices } from '../types/prices'
-import { server } from '../utils/config'
-import connect from '../utils/db'
 
 interface IndexProps {
   prices: Array<Prices>
@@ -13,13 +11,26 @@ interface IndexProps {
 }
 
 export async function getServerSideProps() {
-  const resPrices = await fetch(`${server}/api/prices`)
+  const resPrices = await fetch(`${process.env.PROD_URL}/api/prices`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'User-Agent': '*'
+    }
+  })
+  
   const prices = await resPrices.json()
-
-  const resPlans = await fetch(`${server}/api/plans`)
+  const resPlans = await fetch(`${process.env.PROD_URL}/api/plans`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      'User-Agent': '*'
+    }
+  })
+  
   const plans = await resPlans.json()
-
-  console.log('server', server)
 
   return {
     props: { prices, plans }

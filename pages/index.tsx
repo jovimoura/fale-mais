@@ -4,16 +4,17 @@ import Input from '../components/Input'
 import Select from '../components/Select'
 import { Plans } from '../types/plans'
 import { Prices } from '../types/prices'
-import { server } from '../utils/config'
 
 interface IndexProps {
   prices: Array<Prices>
   plans: Array<Plans>
 }
 
+const url = process.env.NODE_ENV === 'production' ? process.env.PROD_URL : process.env.DEV_URL
+console.log('ambiente:', url)
+
 export async function getServerSideProps() {
   const url = process.env.NODE_ENV === 'production' ? process.env.PROD_URL : process.env.DEV_URL
-  console.log('ambiente:', url)
   const resPrices = await fetch(`${url}/api/prices`, {
     method: 'GET',
     headers: {
@@ -74,8 +75,6 @@ function Home({ prices, plans }: IndexProps) {
   }
 
   function withoutPlan(time: any, perMin: any): any {
-    console.log('time', time)
-    console.log('perMin', perMin)
     return (parseInt(time) * parseFloat(perMin)).toFixed(2)
   }
 
@@ -100,11 +99,10 @@ function Home({ prices, plans }: IndexProps) {
 
   return (
     <>
-    {console.log('teste', process.env.NODE_ENV)}
       <div className="flex min-h-screen flex-col items-center mt-5 py-2">
         <Head>
           <title>FaleMais</title>
-          <link rel="icon" href="/favicon.ico" />
+          <link rel="icon" href="https://img.icons8.com/external-konkapp-outline-color-konkapp/64/undefined/external-cellphone-electronic-devices-konkapp-outline-color-konkapp.png" />
         </Head>
 
         <div>

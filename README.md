@@ -1,23 +1,79 @@
-# Next.js + Tailwind CSS Example
+# FaleMais 📱
 
-This example shows how to use [Tailwind CSS](https://tailwindcss.com/) [(v3.0)](https://tailwindcss.com/blog/tailwindcss-v3) with Next.js. It follows the steps outlined in the official [Tailwind docs](https://tailwindcss.com/docs/guides/nextjs).
+<p>
+  Processo seletivo da LOLDESIGN.
+</p>
 
-## Deploy your own
+<p>
+  O projeto foi feito com Next.js, TypeScript, MongoDB e Tailwind. Caso queira executa-lo, será necessário que você alimente as seguintes variáveis em um arquivo .env, sendo a DB_URL a url que se conectará com o Mongo, DEV_URL, o link do seu localhost e PROD_URL link de produção :
+</p>
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example) or preview live with [StackBlitz](https://stackblitz.com/github/vercel/next.js/tree/canary/examples/with-tailwindcss)
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-tailwindcss&project-name=with-tailwindcss&repository-name=with-tailwindcss)
-
-## How to use
-
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init), [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/), or [pnpm](https://pnpm.io) to bootstrap the example:
-
-```bash
-npx create-next-app --example with-tailwindcss with-tailwindcss-app
-# or
-yarn create next-app --example with-tailwindcss with-tailwindcss-app
-# or
-pnpm create next-app --example with-tailwindcss with-tailwindcss-app
+```
+DB_URL=
+DEV_URL=
+PROD_URL=
 ```
 
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+
+# A aplicação está on-line no link:
+
+
+```
+https://fale-mais-two.vercel.app/
+```
+
+## Para analisar o projeto em sua máquina, siga este passo a passo: 😁
+
+<br>
+
+## 🇧🇷
+
+### Clone o repositório😎
+
+```
+git clone https://github.com/jovimoura/fale-mais
+```
+
+### Acesse o diretorio🤓
+
+```
+cd <nome-da-pasta>
+```
+### Instale as dependências🤠
+```
+npm install
+```
+### Inicie a aplicação🤩
+```
+npm run dev
+```
+### A aplicação, por padrão, fica na porta:🤗
+
+```
+http://localhost:3000/
+```
+
+## Imagem do projeto  💻
+
+<img style="width: 600px; height: 250px" src="./public/print.png">
+
+<br/>
+
+## Responsive design 📱
+
+<img src='./public/print-responsive.png' style='width: 250px; height: 400px'>
+
+## Tecnologias e Bibliotecas utilizadas🦉
+
+<ul>
+    <li>Next.JS</li>
+    <li>MongoDB</li>
+    <li>TypeScript</li>
+    <li>Tailwind</li>
+</ul>
+
+##  🇧🇷 Feito por :
+
+### João Victor dos Santos Moura
+### E-mail: joaovictors.mouraa@gmail.com
+### Linkedin: https://www.linkedin.com/in/jovimoura10/

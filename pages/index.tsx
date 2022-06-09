@@ -1,85 +1,206 @@
-import type { NextPage } from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
+import { useState } from 'react'
+import Input from '../components/Input'
+import Select from '../components/Select'
+import { Plans } from '../types/plans'
+import { Prices } from '../types/prices'
 
-const Home: NextPage = () => {
+interface IndexProps {
+  prices: Array<Prices>
+  plans: Array<Plans>
+}
+
+export async function getServerSideProps() {
+  const resPrices = await fetch('http://localhost:3000/api/prices')
+  const prices = await resPrices.json()
+
+  const resPlans = await fetch('http://localhost:3000/api/plans')
+  const plans = await resPlans.json()
+
+  return {
+    props: { prices, plans }
+  }
+}
+
+function Home({ prices, plans }: IndexProps): JSX.Element {
+  const ddd = ['011', '016', '017', '018']
+
+  const planItems = plans.map((item: any) => item.name)
+
+  const [originState, setOriginState] = useState()
+  const [destinyState, setDestinyState] = useState()
+  const [timeState, setTimeState] = useState('0')
+  const [planState, setPlanState] = useState()
+
+  const [valueWithPlan, setValueWithPlan] = useState()
+  const [valueWithouPlan, setValueWithouPlan] = useState()
+
+  const secondDDD = originState
+    ? ddd.filter((item: any) => item !== originState)
+    : ddd
+
+  function selectPlan(planParam: string): any {
+    switch (planParam) {
+      case 'FaleMais 30':
+        return 30
+        break
+      case 'FaleMais 60':
+        return 60
+        break
+      case 'FaleMais 120':
+        return 120
+        break
+      default:
+        break
+    }
+  }
+
+  function withoutPlan(time: any, perMin: any): any {
+    console.log('time', time)
+    console.log('perMin', perMin)
+    return (parseInt(time) * parseFloat(perMin)).toFixed(2)
+  }
+
+  function withPlan(time: any, perMin: any, plan: any): any {
+    if (parseInt(time) < selectPlan(plan)) {
+      return 0
+    } else {
+      return ((parseInt(time) - selectPlan(plan)) * parseFloat(perMin)).toFixed(2)
+    }
+  }
+
+  function result(orig: any, dest: any) {
+    prices.forEach((price: any) => {
+      if (orig === price.origin && dest === price.destiny) {
+        setValueWithouPlan(withoutPlan(timeState, price.perMin))
+        setValueWithPlan(withPlan(timeState, price.perMin, planState))  
+      }
+    })
+  }
+
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center py-2">
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <>
+      <div className="flex min-h-screen flex-col items-center mt-5 py-2">
+        <Head>
+          <title>FaleMais</title>
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
 
-      <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
-        <h1 className="text-6xl font-bold">
-          Welcome to{' '}
-          <a className="text-blue-600" href="https://nextjs.org">
-            Next.js!
-          </a>
-        </h1>
-
-        <p className="mt-3 text-2xl">
-          Get started by editing{' '}
-          <code className="rounded-md bg-gray-100 p-3 font-mono text-lg">
-            pages/index.tsx
-          </code>
-        </p>
-
-        <div className="mt-6 flex max-w-4xl flex-wrap items-center justify-around sm:w-full">
-          <a
-            href="https://nextjs.org/docs"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Documentation &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Find in-depth information about Next.js features and its API.
-            </p>
-          </a>
-
-          <a
-            href="https://nextjs.org/learn"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Learn &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Learn about Next.js in an interactive course with quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Examples &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Discover and deploy boilerplate example Next.js projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Deploy &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+        <div>
+          <div className="text-center mb-8 ">
+            <h1 className="text-7xl font-bold text-cyan-800">
+              Fale<a className="italic text-cyan-400">Mais</a>
+            </h1>
+          </div>
+          <div className="flex">
+            <div>
+              <Select
+                onChange={(e: any) => setOriginState(e.target.value)}
+                value={originState}
+                label="Origem"
+                items={ddd}
+              />
+            </div>
+            <div>
+              <Select
+                label="Destino"
+                onChange={(e: any) => setDestinyState(e.target.value)}
+                value={destinyState}
+                items={secondDDD}
+              />
+            </div>
+            <Input
+              onChange={(e: any) => setTimeState(e.target.value)}
+              value={timeState}
+              type="number"
+              placeholder="Tempo"
+              icon="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+            <div>
+              <Select
+                label="Plano"
+                onChange={(e: any) => setPlanState(e.target.value)}
+                value={planState}
+                items={planItems}
+              />
+            </div>
+            <div className="flex justify-center items-center">
+              <button
+                className="border-2 border-solid border-zinc-300 rounded-full p-2"
+                onClick={() => result(originState, destinyState)}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 mx-2 text-stone-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 4v16m8-8H4"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div className="flex justify-center items-center mt-10">
+            <div className="mr-10">
+              <div className="flex items-center">
+                <h1 className="text-3xl font-bold text-gray-800">
+                  Com o <a className="text-cyan-800">Fale</a>
+                  <a className="italic text-cyan-400">Mais</a>
+                </h1>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-8 w-8 text-green-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </div>
+              <div className="text-center">
+                <h2 className='text-4xl font-bold text-green-500'>R$: {valueWithPlan}</h2>
+              </div>
+            </div>
+            <div>
+              <div className="flex items-center">
+                <h1 className="text-3xl font-bold text-gray-800">
+                  Sem o <a className="text-cyan-800">Fale</a>
+                  <a className="italic text-cyan-400">Mais</a>
+                </h1>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-8 w-8 text-red-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </div>
+              <div className="text-center">
+                <h2 className='text-4xl font-bold text-red-600'>R$: {valueWithouPlan}</h2>
+              </div>
+            </div>
+          </div>
         </div>
-      </main>
-
-      <footer className="flex h-24 w-full items-center justify-center border-t">
-        <a
-          className="flex items-center justify-center gap-2"
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-        </a>
-      </footer>
-    </div>
+      </div>
+    </>
   )
 }
 

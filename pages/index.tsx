@@ -99,7 +99,7 @@ function Home({ prices, plans }: IndexProps) {
 
   return (
     <>
-      <div className="flex min-h-screen flex-col items-center mt-5 py-2">
+      <div className="flex min-h-screen flex-col items-center mt-5 p-2">
         <Head>
           <title>FaleMais</title>
           <link rel="icon" href="https://img.icons8.com/external-konkapp-outline-color-konkapp/64/undefined/external-cellphone-electronic-devices-konkapp-outline-color-konkapp.png" />
@@ -169,7 +169,7 @@ function Home({ prices, plans }: IndexProps) {
             </div>
           </div>
           <div className="flex justify-center items-center mt-10">
-            <div className="mr-10">
+            <div className="mr-10 md:mr-3">
               <div className="flex items-center">
                 <h1 className="text-3xl font-bold text-gray-800">
                   Com o <a className="text-cyan-800">Fale</a>

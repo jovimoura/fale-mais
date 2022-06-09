@@ -10,15 +10,16 @@ interface IndexProps {
   plans: Array<Plans>
 }
 
-const dev = process.env.NODE_ENV !== 'production';
-
-export async function getStaticProps() {
+export async function getServerSideProps() {
+  const dev = process.env.NODE_ENV !== 'production'
   const server = dev ? 'http://localhost:3000' : 'https://fale-mais-theta.vercel.app'
   const resPrices = await fetch(`${server}/api/prices`)
   const prices = await resPrices.json()
 
   const resPlans = await fetch(`${server}/api/plans`)
   const plans = await resPlans.json()
+
+  console.log('server', server)
 
   return {
     props: { prices, plans }

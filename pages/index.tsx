@@ -12,7 +12,9 @@ interface IndexProps {
 }
 
 export async function getServerSideProps() {
-  const resPrices = await fetch(`${process.env.PROD_URL}/api/prices`, {
+  const url = process.env.NODE_ENV === 'production' ? process.env.PROD_URL : process.env.DEV_URL
+  console.log('ambiente:', url)
+  const resPrices = await fetch(`${url}/api/prices`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -22,7 +24,7 @@ export async function getServerSideProps() {
   })
   
   const prices = await resPrices.json()
-  const resPlans = await fetch(`${process.env.PROD_URL}/api/plans`, {
+  const resPlans = await fetch(`${url}/api/plans`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -98,7 +100,7 @@ function Home({ prices, plans }: IndexProps) {
 
   return (
     <>
-    {console.log('teste', server)}
+    {console.log('teste', process.env.NODE_ENV)}
       <div className="flex min-h-screen flex-col items-center mt-5 py-2">
         <Head>
           <title>FaleMais</title>

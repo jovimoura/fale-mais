@@ -10,11 +10,14 @@ interface IndexProps {
   plans: Array<Plans>
 }
 
-export async function getServerSideProps() {
-  const resPrices = await fetch('http://localhost:3000/api/prices')
+const dev = process.env.NODE_ENV !== 'production';
+
+export async function getStaticProps() {
+  const server = dev ? 'http://localhost:3000' : 'https://fale-mais-theta.vercel.app'
+  const resPrices = await fetch(`${server}/api/prices`)
   const prices = await resPrices.json()
 
-  const resPlans = await fetch('http://localhost:3000/api/plans')
+  const resPlans = await fetch(`${server}/api/plans`)
   const plans = await resPlans.json()
 
   return {
@@ -22,7 +25,7 @@ export async function getServerSideProps() {
   }
 }
 
-function Home({ prices, plans }: IndexProps): JSX.Element {
+function Home({ prices, plans }: IndexProps) {
   const ddd = ['011', '016', '017', '018']
 
   const planItems = plans.map((item: any) => item.name)

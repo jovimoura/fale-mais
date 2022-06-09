@@ -1,5 +1,8 @@
+import  useSwr  from 'swr';
 import type { NextApiRequest, NextApiResponse } from 'next'
 import connect from '../../utils/db'
+import api from '../../utils/api';
+
 
 export default async (
   req: NextApiRequest,
@@ -36,3 +39,11 @@ export default async (
     res.status(400).json({ error: 'Wrong method request!' })
   }
 }
+
+// export async function getPlans() {
+//   const res = await api('/api/plans')
+//   const plans = await res.data
+//   // const { data, error } = useSwr('/api/prices', api)
+//   // const plans = await data
+//   return plans
+// }
